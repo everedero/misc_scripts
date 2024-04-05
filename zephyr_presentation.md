@@ -2,25 +2,29 @@
 ## Setup folder
 * Start from a clean sample directory
 Do all the setup gizmo in Readme
-
 ```
 west init -m https://github.com/zephyrproject-rtos/example-application --mr main my-workspace
 ```
 (Don’t git clone, it creates a weird path)
 
 * update Zephyr modules
+```
 cd my-workspace
 west update
+```
+(Takes > 2 minutes, pre-download)
 
 * Try compilation
 ```
+cd example-application
 BOARD="custom_plank"
 west build -b $BOARD app -- -DOVERLAY_CONFIG=debug.conf
 ```
 
 * Find a similar board
 ```
-grep -rnw ./ -e "stm32f40.*"
+cd ~/zephyrproject/zephyr/boards
+grep -rnw ./ -e "name: stm32f40.*"
 ```
 
 ## Create our board
@@ -35,6 +39,7 @@ rename "s/stm32f4_disco/totoboard/g" ./*
 grep -rnw ./ -i -e ".*stm32f4_disco"
 sed -i 's/stm32f4_disco/totoboard/' totoboard.yaml
 sed -i 's/stm32f4_disco/totoboard/' board.yml
+sed -i 's/STM32F4_DISCO/TOTOBOARD/' Kconfig.totoboard
 ```
 Kconfig: BOARD_TOTOBOARD instead of BOARD_STM32F4_DISCO
 (+ docs)
@@ -53,7 +58,7 @@ west build -p always -b $BOARD app -- -DOVERLAY_CONFIG=debug.conf
 ```
 cp -r ~/zephyrproject/zephyr/samples/basic/blinky ./
 
-west build -p always -b $BOARD blinky -- -DOVERLAY_CONFIG=prj.conf
+west build -p always -b $BOARD blinky
 ```
 
 Blinky OK
@@ -63,9 +68,8 @@ Blinky OK
 find ./ -name "stm32f407Xg.dtsi"
 ```
 It is in : $Z/dts/arm/st/f4/stm32f4
-
 ```
-:%s/f405/f407/g
+stm32f405Xg.dtsi
 ```
 
 ```
@@ -83,15 +87,24 @@ grep -rnw ./ -e ".*stm32f407.*"
 
 ## Open schematics and find a LED
 Orange LED: PC13
+Active HIGH
+
+Blue button: PC14
+Active LOW
 
 Usart -> Usart 6
+PC6/USART6\_TX
+PC7/USART6\_RX
 
 Remove usart2, can busses, disable OTG
+Change zephyr,shell to usart6
+
+TODO Where are pinmuxes defined?
 
 * In debug mode, we can read UART
 
 ## Config shell gpio
-In blinky prj.conf:
+In blinky prj.conf, add:
 ```
 CONFIG_SHELL=y
 CONFIG_GPIO_SHELL=y
@@ -155,6 +168,10 @@ gpio conf gpio@40020800 14 il
 0 if not pressed: OK
 
 * Misc config with devmem
+What if you need an option that is not in the shell GPIO i/o/h/l toggles?
+```
+CONFIG_DEVMEM_SHELL (enabled by default)
+```
 For instance, slew-rate, in bindings
 ```
 /dts/bindings/pinctrl/st,stm32-pinctrl.yaml
@@ -169,13 +186,18 @@ Page 285: Address offset: 0x08 for OSPEEDR
 
 Easy sample with input vs output
 ```
+gpio conf gpio@40020800 4 i
 devmem 40020800 32
-gpio conf gpio@40020800 4 oh0
+gpio conf gpio@40020800 4 o
 devmem 40020800 32
 ```
 -> See 00 (Input state) become 01 (Output mode)!
 
-# I2C
+I can compute register values by hand instead of using software abstraction!
+
+
+# I2CA
+Output connector:
 ```
 PB10/I2C2_SCL
 PB11/I2C2_SDA
@@ -190,24 +212,36 @@ PB11/I2C2_SDA
 };
 ```
 
+Copy and modify
+
 ```
 CONFIG_I2C=y
 CONFIG_I2C_SHELL=y
 ```
+Build
 
+First, show scan without daughter board: nothing displayed.
+Then, with daughter board:
+
+```
 i2c scan i2c@40005800
 2d 53 57
+```
 
 Page 64 / page 159: I2C adresses are 0x53 and 0x57 (7-bits)
 
 Device identifier:
+```
 i2c read i2c@40005800 57 17 2
+```
 
 PE7
+```
 gpio get gpio@40021000 7
 
 gpio conf gpio@40021000 7 o
 gpio set gpio@40021000 7 1
+```
 -> Disables I2C device
 
 Read I2C
@@ -218,9 +252,15 @@ i2c read i2c@40005800 53 0
 ## Bringup complex subsystem
 ### Display
 Let’s say I made an advanced DTS
-Switching back to
-
+Switching back to:
+```
 BOARD="st25dv_mb1283_disco"
+```
+
+Open the dts in:
+```
+vim $Z/boards/st/st25dv_mb1283_disco/st25dv_mb1283_disco.dts
+```
 
 For display, I added:
 * SPI2 activation
@@ -231,13 +271,22 @@ For display, I added:
 Simple sample:
 ```
 cp -r ~/zephyrproject/zephyr/samples/drivers/display/ ./
+west build -p always -b $BOARD display
 ```
 
 ### USB
 ```
 cp -r ~/zephyrproject/zephyr/samples/subsys/usb/testusb/ ./
-west build -b $BOARD testusb -- -DOVERLAY_CONFIG=prj.conf
+west build -p always -b $BOARD testusb
 ```
 
 Observe:
 NordicSemiconductor Zephyr testusb sample
+
+# SPI shell extra
+About spi shell: someone named Benner is preparing a PR
+It will look like this:
+
+```
+uart:~$ spi transceive spi@40013000 49 0
+```
