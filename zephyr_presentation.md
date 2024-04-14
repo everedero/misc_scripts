@@ -23,12 +23,14 @@ BOARD="custom_plank"
 west build -b $BOARD -p always app
 ```
 
+## Create our board
 Board folder:
 ```
 tree -L 3 boards/
 ```
 
-* Find a similar board
+* Find a similar board dts to copy
+Copy a board, to have presets and example configs
 
 SoC: STM32F405
 But we can take an exemple from the same SoC series, and change SoC, for the demo
@@ -36,9 +38,7 @@ But we can take an exemple from the same SoC series, and change SoC, for the dem
 cd $Z/boards
 grep -rnw ./ -e "name: stm32f40.*"
 ```
-
-## Create our board
-* Copy a board
+* stm32f4 disco (not the right SoC, we’ll change it)
 ```
 cp -r $Z/boards/st/stm32f4_disco/ ./boards/st
 ```
@@ -146,7 +146,11 @@ west build -t menuconfig
 Either put the logs on UART2 (zephyr,console=&usart2), or disable logs by modifying blinky sample.
 
 * PA2/USART2\_TX, PA3/USART2\_RX (already set as default)
-TODO UART2 read does not work
+Works with the uart-usb adapter.
+Pinout:
+* Yellow = GND
+* Green TXD = pin 3
+* Blue RXD = pin 4
 
 ## Use shell GPIO
 ```
