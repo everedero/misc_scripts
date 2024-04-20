@@ -23,6 +23,9 @@ BOARD="custom_plank"
 west build -b $BOARD -p always app
 ```
 
+* Number 1, build folder: done. We want a device tree for custom board
+* Copy-pasting: because of dts syntax slightly manufacturer-dependant
+
 ## Create our board
 Board folder:
 ```
@@ -60,7 +63,6 @@ Not mandatory but nice: compatible = "st,totoboard", model description
 BOARD="totoboard"
 west build -p always -b $BOARD app
 ```
-
 * It looks for examplesensor0, not here in our dts
 
 ## Import blinky
@@ -120,9 +122,9 @@ Check the main clock
 ```
 west build -p always -b $BOARD blinky
 ```
-
 ## Results
 
+* Shall be the end of part 2: write DTS
 * Build and flash: see blinky and blinky msg.
 
 ## Config shell gpio
@@ -232,20 +234,6 @@ Can also write in devmem:
 devmem 40020800 32 0x400a000
 ```
 
-#### Exemple setting not in shell
-TODO: Remove or not?
-For instance, slew-rate, in bindings
-```
-/dts/bindings/pinctrl/st,stm32-pinctrl.yaml
-```
-```
-GPIOx_OSPEEDR
-GPIOC: 40020800
-```
-Page 285: Address offset: 0x08 for OSPEEDR
-0 by default
-0x2000 0000 for high speed offset 14
-
 ## I2C shell
 * Output connector I2C:
 ```
@@ -270,7 +258,7 @@ CONFIG_I2C_SHELL=y
 ```
 Build
 
-TODO Talk about what when it builds: menuconfig again, i2c driver setup in dts, Linux/RPi i2cget/i2cset equivalents?
+* Time to mention SPI shell exists and was just merged
 
 * First, show scan without daughter board: nothing displayed.
 
@@ -300,6 +288,8 @@ gpio set gpio@40021000 7 1
 -> Disables I2C device
 
 * Can be used for osc measurements
+
+* End of part 3: shell!
 
 ## Bringup complex subsystem
 Systems that cannot just be checked with GPIO / i2c / spi simple commands.
@@ -340,7 +330,7 @@ west build -p always -b $BOARD testusb
 
 # FAQ preshots
 ## SPI shell
-About spi shell: someone named Benner has an opened PR
+Just merged!
 It will look like this:
 
 ```
@@ -348,13 +338,12 @@ uart:~$ spi transceive spi@40013000 49 0
 ```
 
 ## Clock tree config
-Start crying?
-
-SoC clock tree schem page 154.
+Currently manufacturer dependant.
+In case of ST, use STMCube configurator, or SoC clock tree schem page 154, and some magic.
 
     vim $Z/dts/bindings/clock/st,stm32f4-pll-clock.yaml
 
-Maybe an RFC?
+See RFC & talk by Daniel DeGrasse
 
 ## More explanations about device tree
 
@@ -376,3 +365,16 @@ In the pinctrl file we chose earlier.
 ~/zephyrproject/modules/hal/stm32/dts/st/f4/stm32f405zgtx-pinctrl.dtsi
 ```
 * manufacturer specific macro stuff, grep "define STM32_PINMUX" and "define PIN_NO" if questions.
+
+## Why devmem?
+For instance, slew-rate, in bindings
+```
+/dts/bindings/pinctrl/st,stm32-pinctrl.yaml
+```
+```
+GPIOx_OSPEEDR
+GPIOC: 40020800
+```
+Page 285: Address offset: 0x08 for OSPEEDR
+0 by default
+0x2000 0000 for high speed offset 14
