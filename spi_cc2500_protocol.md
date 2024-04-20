@@ -186,3 +186,55 @@ SPI bus on P2 pins is strange. The datasheet states that SPI pins are:
 | DI  | P1.7 |
 
 My take on this: SPI is done via bitbanging instead of HW peripherals, explaining why the clock is irregular.
+
+Real remote seems to have crazy TX power, find an external power supply and a good 2.4GHz antenna?
+
+# SPI module pinout
+## CC2500 chip pinout
+
+<!--
+            SI    GND   DGUARD  RBIAS  GND
+       +--------------------------------------+
+       |  o  |     |      |      |      |     |
+       |                                      |
+       |     20    19     18     17     16    |
+       |                                      |
+       |                                      |
+SCLK   |- 1                                15-| AVDD
+       |                                      |
+       |                                      |
+SO     |- 2                                14-| AVDD
+       |                                      |
+       |                                      |
+GDO2   |- 3                                13-| RF_N
+       |                                      |
+       |                                      |
+DVDD   |- 4                                12-| RF_P
+       |                                      |
+       |                                      |
+DCOUPL |- 5                                11-| AVDD
+       |                                      |
+       |                                      |
+       |    |     |      |      |      |      |
+       |                                      |
+       |     6    7      8      9      10     |
+       +--------------------------------------+
+           GDO0  CSn   XOSC1   AVDD   XOSC2
+-->
+
+![Kroki generated PlantUML](https://kroki.io/ditaa/svg/eNq9lMEOgjAMhu8-Re9kCRugcpxrJETCCAvGm2-gL8DDu60Q0ZgMjdDD3275ab6FdQDPMKXTokarWHSytUV7KKXxm5vBFbFZEY3-HuDuFUb9mPqJf068-UXslOd-wfeUdpS2f-g_w29UdXIFAx4y84z1IM-Iy0NpKhiIIFS6FlSBWhBUEoRKLFR7vNaLQ6E9OUGlQShBUM3yUEp3TeWgsiAUX-v3Tf3Buf6-P7x-4KeXJhloriEfThyPtl_fJv_eobZ9lLnZ-qKNcsMr6S64pdg8AOfCyos=)
+
+## Small module pinout
+Shenzen Puffin ELectronics CC2500 R1 module, from AliExpress, no pinout
+
+Pin 1: top left, when marking is on the right sense
+```
+1- VDD (3.3V OK)
+2- GND
+3-
+4- SCLK
+5- SO (GDO1)
+6- GDO2
+7- GDO0 (Atest)
+8- CSn
+```
