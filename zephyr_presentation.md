@@ -101,11 +101,6 @@ find ../ -name "stm32f407v(e-g)tx-pinctrl.dtsi"
 grep -rnw ./ -e ".*stm32f407.*"
 ```
 
-## Clock frequency
-Check the main clock
-* OSC\_IN -> NX3225GD-8MHZ
-* HSE is 8 MHz in DTS
-* Look, a nice macro to avoid writing lots of zeros (in $Z/dts/common)
 
 ## Open schematics and find a LED + UART
 * Orange LED: PC13 Active HIGH
@@ -119,6 +114,13 @@ Check the main clock
 * Remove can busses, disable OTG
 * Change zephyr,shell to usart6
 
+## Clock frequency
+Check the main clock
+* OSC\_IN -> NX3225GD-8MHZ
+* HSE is 8 MHz in DTS
+* Look, a nice macro to avoid writing lots of zeros (in $Z/dts/common)
+
+## Build
 ```
 west build -p always -b $BOARD blinky
 ```
@@ -259,6 +261,7 @@ CONFIG_I2C_SHELL=y
 Build
 
 * Time to mention SPI shell exists and was just merged
+* Similar to i2cset/get and spidev in Linux, don’t need my Pi anymore
 
 * First, show scan without daughter board: nothing displayed.
 
