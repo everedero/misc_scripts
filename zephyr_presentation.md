@@ -1,17 +1,18 @@
-# HW Bring up
+# Zephyr board bring-up walkthrough
+
+Commands and notes for the 25/04/2024 Zephyr Tech Talk.
 
 ## Setup folder
-(Takes > 2 minutes, pre-download)
 
 * Start from a clean sample directory
 
-Do all the setup gizmo in Readme
+Do all the setup steps in Readme, then clone a new example-application with west init:
 ```
 west init -m https://github.com/zephyrproject-rtos/example-application --mr main my-workspace
 ```
-(Don’t git clone, it creates a weird path)
+Don’t git clone directly, it creates a weird path.
 
-* update Zephyr modules
+* Update Zephyr modules
 ```
 cd my-workspace
 west update
@@ -23,30 +24,21 @@ BOARD="custom_plank"
 west build -b $BOARD -p always app
 ```
 
-* Number 1, build folder: done. We want a device tree for custom board
-* Copy-pasting: because of dts syntax slightly manufacturer-dependant
-
 ## Create our board
-Board folder:
-```
-tree -L 3 boards/
-```
-
 * Find a similar board dts to copy
 Copy a board, to have presets and example configs
 
-SoC: STM32F405
-But we can take an exemple from the same SoC series, and change SoC, for the demo
+* SoC: STM32F405, but we can take an exemple from the same SoC series, and change SoC, for the demo
 ```
 cd $Z/boards
 grep -rnw ./ -e "name: stm32f40.*"
 ```
-* stm32f4 disco (not the right SoC, we’ll change it)
+* Choosing stm32f4\_disco as a ref design - not the right SoC but we’ll change it
 ```
 cp -r $Z/boards/st/stm32f4_disco/ ./boards/st
 ```
 
-## Rename stuff
+### Rename board files
 ```
 rename "s/stm32f4_disco/totoboard/g" ./*
 grep -rnw ./ -i -e ".*stm32f4_disco"
@@ -54,82 +46,86 @@ sed -i 's/stm32f4_disco/totoboard/' totoboard.yaml
 sed -i 's/stm32f4_disco/totoboard/' board.yml
 sed -i 's/STM32F4_DISCO/TOTOBOARD/' Kconfig.totoboard
 ```
-* Remove docs folder, for later
+* Docs folder can be updated later, it is mandatory if you want to contribute your board to Zephyr main
 
-Not mandatory but nice: compatible = "st,totoboard", model description
+* Not mandatory but nice: customize compatible = "st,totoboard" and model description in dts file
 
-## Try new board
+### Try the board
 ```
 BOARD="totoboard"
 west build -p always -b $BOARD app
 ```
-* It looks for examplesensor0, not here in our dts
+* It looks for examplesensor0, which is not here in our dts
 
-## Import blinky
+### Import blinky
 ```
 cp -r $Z/samples/basic/blinky ./
-
 west build -p always -b $BOARD blinky
 ```
 
-* While it builds -> some explanations about device tree "zephyr,led0", open the blinky.c source
+Don’t flash this, it still needs customizations.
+
+* "zephyr,led0" in dts allows to choose the led actually blinked by software
+ * You can see the call to zephyr,led0 if you open the blinky.c source
 ```
 vim $Z/samples/basic/blinky/src/main.c
 ```
 
-## Find correct chip
-Now time to actually modify the DTS file.
-First, SoC selection.
+## DTS customisation
+* Now modify the DTS file to match the board.
+
+### SoC selection
 ```
 find ./ -name "stm32f407Xg.dtsi"
 ```
-It is in : $Z/dts/arm/st/f4/stm32f4
+The SoC description file is:
 ```
-stm32f405Xg.dtsi
+$Z/dts/arm/st/f4/stm32f4/stm32f405Xg.dtsi
 ```
 
+The pinctrl file is:
 ```
 find ../ -name "stm32f407v(e-g)tx-pinctrl.dtsi"
 ./modules/hal/stm32/dts/st/f4/stm32f407v(e-g)tx-pinctrl.dtsi
 ```
 
 * Pincontrol file: check your board chip name (me: stm32f405vgtx-pinctrl because I have STM32F405VGT6)
-+ wildcards for component name
+* X is a standard wildcard for component name
 
-* Also, board.yaml
+* Also, change the SoC in board.yaml
 ```
 grep -rnw ./ -e ".*stm32f407.*"
 ```
 
+### Open schematics and find a LED + UART
+Open schematics for the board.
 
-## Open schematics and find a LED + UART
 * Orange LED: PC13 Active HIGH
 * Blue button: PC14 Active LOW
 * Rapid pull-up / pull-down check on schematics
 
-* Usart -> Usart 6
+* Usart accessible on USB port through ST-Link: Usart 6
 * PC6/USART6\_TX
 * PC7/USART6\_RX
 
 * Remove can busses, disable OTG
 * Change zephyr,shell to usart6
 
-## Clock frequency
+### Clock frequency
 Check the main clock
 * OSC\_IN -> NX3225GD-8MHZ
 * HSE is 8 MHz in DTS
-* Look, a nice macro to avoid writing lots of zeros (in $Z/dts/common)
+* There is a nice macro to avoid writing lots of zeros in frequency fields (in $Z/dts/common)
 
-## Build
+### Build and flash and run
 ```
 west build -p always -b $BOARD blinky
+west flash
 ```
-## Results
+Results: LED should blink and UART messages should be displayed.
 
-* Shall be the end of part 2: write DTS
-* Build and flash: see blinky and blinky msg.
-
-## Config shell gpio
+## Shells
+### Enable GPIO shell
 ```
 tree -L 2 blinky
 ```
@@ -141,7 +137,8 @@ CONFIG_SHELL=y
 CONFIG_GPIO_SHELL=y
 ```
 
-Unsure about the name? gpio shell or shell gpio?
+Now, are you unsure about the option name? Should it be gpio shell or shell gpio?
+Open the option catalogue, menuconfig:
 ```
 west build -t menuconfig
 ```
@@ -149,25 +146,18 @@ west build -t menuconfig
 * Log level for LED
 Either put the logs on UART2 (zephyr,console=&usart2), or disable logs by modifying blinky sample.
 
-* PA2/USART2\_TX, PA3/USART2\_RX (already set as default)
-Works with the uart-usb adapter.
-Pinout:
-* Yellow = GND
-* Green TXD = pin 3
-* Blue RXD = pin 4
-
 ## Use shell GPIO
 ```
 gpio help
 gpio info
 ```
 
-* Yellow: PC4
+* Yellow LED is on PC4
 ```
 gpio conf
 ```
 
-Gpio referenced by addresses, not nice names! So, tip:
+Gpio referenced by addresses, not nice names! So, tips to find the register address for our GPIOC peripheral:
 
 * Pre-built DTS
 ```
@@ -205,13 +195,7 @@ gpio conf gpio@40020800 14 il
 0 if not pressed: OK
 
 ### Devmem shell
-* Misc config with devmem
-
-Devmem: read and write register values by hand instead of using software abstraction!
-But why?
-
-* What if you need an option that is not in the shell GPIO i/o/h/l toggles
-* Try some pull-up strength, speed settings, for signal integrity or EMC
+Read and modify misc peripheral config with devmem.
 
 ```
 CONFIG_DEVMEM_SHELL (enabled by default)
@@ -242,7 +226,7 @@ devmem 40020800 32 0x400a000
 PB10/I2C2_SCL
 PB11/I2C2_SDA
 ```
-* From boards/st/nucleo_f411re/nucleo_f411re.dts:
+* From boards/st/nucleo\_f411re/nucleo\_f411re.dts:
 ```
 &i2c1 {
         pinctrl-0 = <&i2c1_scl_pb8 &i2c1_sda_pb9>;
@@ -370,6 +354,11 @@ In the pinctrl file we chose earlier.
 * manufacturer specific macro stuff, grep "define STM32_PINMUX" and "define PIN_NO" if questions.
 
 ## Why devmem?
+Devmem: read and write register values by hand instead of using software abstraction!
+But why?
+
+* What if you need an option that is not in the shell GPIO i/o/h/l toggles
+* Try some pull-up strength, speed settings, for signal integrity or EMC
 For instance, slew-rate, in bindings
 ```
 /dts/bindings/pinctrl/st,stm32-pinctrl.yaml
@@ -378,6 +367,6 @@ For instance, slew-rate, in bindings
 GPIOx_OSPEEDR
 GPIOC: 40020800
 ```
-Page 285: Address offset: 0x08 for OSPEEDR
-0 by default
-0x2000 0000 for high speed offset 14
+* Register map page 285: Address offset: 0x08 for OSPEEDR
+* 0 by default
+* 0x2000 0000 for high speed offset 14
