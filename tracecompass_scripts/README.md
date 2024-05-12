@@ -11,6 +11,16 @@ You can also download TraceCompass and try adding the modules:
 
 But in my case it fails with [this error](https://github.com/ge-high-assurance/VERDICT/issues/75).
 
+### Python scripts
+
+By default, executing Python scripts fails with: "Could not setup Python engine".
+
+Go to:
+
+    Preferences -> Python Scripting (using Py4J)
+
+And change the Python location from "python" to your Python path, for instance "/usr/bin/python3"
+
 ## Importing the module
 
     File -> Open Trace -> zephyr_thread_states.js
