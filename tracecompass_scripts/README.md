@@ -1,4 +1,4 @@
-# Tracecompass scripts
+# Zephyr tracecompass scripts
 
 ## Installing TraceCompass with scripting modules
 
@@ -19,7 +19,7 @@ Go to:
 
     Preferences -> Python Scripting (using Py4J)
 
-And change the Python location from "python" to your Python path, for instance "/usr/bin/python3"
+And change the Python location from "python" to your Python path, for instance "/usr/bin/python3".
 
 ## Importing the module
 
@@ -29,5 +29,8 @@ Then open the trace, and run the script with:
 
     Run As... -> Ease Script
 
+For this script, Py4J fails with "An error occurred while calling o15.getQuarkAbsoluteAndAdd", but succeeds with Jython.
+
+    Run As... -> Run Configuration -> Jython
 
 
