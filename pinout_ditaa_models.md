@@ -126,6 +126,11 @@
 ![Kroki generated PlantUML](https://kroki.io/ditaa/svg/eNrFlssKgzAQRfd-xexFMDNG27WxpbQ-0GL7MX58W2mx0RJmcaF3EQgzh8MkBiRaEievxN7Oi1-Koy-WJpJRnutnt8lSOjaOpmhbU8HzuoKrRgmzENY8dquOauj6ahhOh7WZ0eZmaxZObn3b1h58vYPNkinhHm622ns2aDPTn75tkaUj8CQnMvvwzIH8NrNVwmaHNudK2BLaXGhnLsBmk2nNOdrMSjhDn_b8WDRwijYbUcKMNjvtaRuLNmtndgZsLmvlPbsUbLajEi4vZ6TZ_5UK5N34AGiqfao=)
 
 ## STM32 NUCLEO
+144-pins female header connectors, such as in NUCLEO-F756ZG. [See manual](https://www.st.com/resource/en/user_manual/dm00244518-stm32-nucleo-144-boards-stmicroelectronics.pdf)
+
+Be careful, eval kit pin names do not match logical pin names.
+For instance, CN7-A0 header pin corresponds to PA3.
+
 <!--
                                                                          CN7
 
@@ -134,15 +139,15 @@
                                                                        |   |   |
                                                                    D17 | 3 | 4 | D14
                                                                        |   |   |
-                                                                   D18 | 5 | 6 |
+                                                                   D18 | 5 | 6 | AREF
                     CN8                                                |   |   |
-                                                                   D19 | 7 | 8 |
+                                                                   D19 | 7 | 8 | GND
                   +-------+                                            |   |   |
                NC | 1 | 2 | D43                                    D20 | 9 | 10| D13
                   |   |   |                                            |   |   |
-                  | 3 | 4 | D44                                    D21 | 11| 12| D12
+            IOREF | 3 | 4 | D44                                    D21 | 11| 12| D12
                   |   |   |                                            |   |   |
-                  | 5 | 6 | D45                                    D22 | 13| 14| D11
+            RESET | 5 | 6 | D45                                    D22 | 13| 14| D11
                   |   |   |                                            |   |   |
               3V3 | 7 | 8 | D46                                    D23 | 15| 16| D10
                   |   |   |                                            |   |   |
@@ -152,10 +157,10 @@
                   |   |   |                                            |   |   |
               GND | 13| 14| D49                                        +-------+
                   |   |   |
-                  | 15| 16| D50                                        +-------+
-                  |   |   |                                            | 1 | 2 | D7
+              VIN | 15| 16| D50                                        +-------+
+                  |   |   |                                      AVDD  | 1 | 2 | D7
                   +-------+                                            |   |   |
-                                                                       | 3 | 4 | D6
+                                                                 AGND  | 3 | 4 | D6
                   +-------+                                            |   |   |
               A0  | 1 | 2 | D51                                   GND  | 5 | 6 | D5
                   |   |   |                                            |   |   |
