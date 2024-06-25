@@ -131,6 +131,76 @@
 Be careful, eval kit pin names do not match logical pin names.
 For instance, CN7-A0 header pin corresponds to PA3.
 
+### Without logical pins
+<!--
+                                                                         CN7
+
+                                                                       +-------+
+                                                                   D16 | 1 | 2 | D15
+                                                                       |   |   |
+                                                                   D17 | 3 | 4 | D14
+                                                                       |   |   |
+                                                                   D18 | 5 | 6 | AREF
+                    CN8                                                |   |   |
+                                                                   D19 | 7 | 8 | GND
+                  +-------+                                            |   |   |
+               NC | 1 | 2 | D43                                    D20 | 9 | 10| D13
+                  |   |   |                                            |   |   |
+            IOREF | 3 | 4 | D44                                    D21 | 11| 12| D12
+                  |   |   |                                            |   |   |
+            RESET | 5 | 6 | D45                                    D22 | 13| 14| D11
+                  |   |   |                                            |   |   |
+              3V3 | 7 | 8 | D46                                    D23 | 15| 16| D10
+                  |   |   |                                            |   |   |
+               5V | 9 | 10| D47                                    D24 | 17| 18| D9
+                  |   |   |                                            |   |   |
+              GND | 11| 12| D48                                    D25 | 19| 20| D8
+                  |   |   |                                            |   |   |
+              GND | 13| 14| D49                                        +-------+
+                  |   |   |
+              VIN | 15| 16| D50                                        +-------+
+                  |   |   |                                      AVDD  | 1 | 2 | D7
+                  +-------+                                            |   |   |
+                                                                 AGND  | 3 | 4 | D6
+                  +-------+                                            |   |   |
+              A0  | 1 | 2 | D51                                   GND  | 5 | 6 | D5
+                  |   |   |                                            |   |   |
+              A1  | 3 | 4 | D52                                    A6  | 7 | 8 | D4
+                  |   |   |                                            |   |   |
+              A2  | 5 | 6 | D53                                    A7  | 9 | 10| D3
+                  |   |   |                                            |   |   |
+              A3  | 7 | 8 | D54                                    A8  | 11| 12| D2
+                  |   |   |                                            |   |   |
+              A4  | 9 | 10| D55                                    D26 | 13| 14| D1
+                  |   |   |                                            |   |   |
+              A5  | 11| 12| GND                                    D27 | 15| 16| D0
+                  |   |   |                                            |   |   |
+              D72 | 13| 14| D56                                    GND | 17| 18| D42
+                  |   |   |                                            |   |   |
+              D71 | 15| 16| D57                                    D28 | 19| 20| D41
+                  |   |   |                                            |   |   |
+              D70 | 17| 18| D58                                    D29 | 21| 22| GND
+                  |   |   |                                            |   |   |
+              D69 | 19| 20| D59                                    D30 | 23| 24| D40
+                  |   |   |                                            |   |   |
+              D68 | 21| 22| D60                                    D31 | 25| 26| D39
+                  |   |   |                                            |   |   |
+              GND | 23| 24| D61                                    GND | 27| 28| D38
+                  |   |   |                                            |   |   |
+              D67 | 25| 26| D62                                    D32 | 29| 30| D37
+                  |   |   |                                            |   |   |
+              D66 | 27| 28| D63                                    D33 | 31| 32| D36
+                  |   |   |                                            |   |   |
+              D65 | 29| 30| D64                                    D34 | 33| 34| D35
+                  |   |   |                                            |   |   |
+                  +-------+                                            +-------+
+
+                  CN9                                                  CN10
+-->
+![Kroki generated PlantUML](https://kroki.io/ditaa/svg/eNrNmEGOgzAMRfecIvtqpDiOk7BEIM2OZU_Tw49NW5pIncqtYmaQvCvm5ffHP-Bcp2te8zB06nX6ul6nHg0XSO7igCtwLUC9KC_36kOZuRlyxY0y_lPKws2IK_3ScF7LHxOO3Ey0LE8b7tbqQrjOtbUiqgiD5x8LJXj5p3F48cBeOlbWilFHKcsC4ApCGY6hvFmLKUlHKcIDckWhBGtKPOPDXkyZdJRyExBXEkpvriWda4vFrKMUe0DmKnzTaA35vS61w2LRQYpDYOQdJysrB0HeDRbHHhH2egvsPiHf9WHvybEPtWw-RD9Ptn2mJWvIyTeiECh6iXfqkUbWZp2gEYWCptmUXDPRzCFDK4oqM6fs6oFmHpkTNqKQKjKn4uqBZp6YU2xEIWVipiYxzSGpFmXbEhrIXA9C87xccnOMIFWq36Lhnpcx2FNCEw_KVC91YEawp_S1LKSMdbFxYJeEq0vMKdNYy0KqXF9QlhbYJmE7DNj7MpVKliV5HeUWU2yTIDbBgw5yuywJ9LsnsE2C2ASLvZa5liUFnZYyGALbBLfcyfaUqZYl6d4oUTIf2SYoNsFkT0m1LEn3RolyKkG2CYpNkI54o_zoEPg4Tg_PPnCM7u1rXsH_AN1nAPo=)
+
+
+### With logical pins
 Logical pin names are indicated with parenthesis (PA3).
 
 <!--
