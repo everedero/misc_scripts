@@ -1,1 +1,0 @@
-Trace sample with Zephyr subsys/tracing, mutex enabled but no ISR.

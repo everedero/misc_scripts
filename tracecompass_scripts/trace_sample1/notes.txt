@@ -1,1 +1,0 @@
-Short trace sample with shell UART, mutex and ISR
