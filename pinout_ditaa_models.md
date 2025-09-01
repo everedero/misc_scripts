@@ -76,7 +76,7 @@
 
 -->
 
-![Kroki generated PlantUML](https://kroki.io/ditaa/svg/eNrtl82OgyAURvc-BXszE_7RdW1m15iZSV_DF-DhC5RWBrpAINxZlASNi_vlyNUjDqhijB9mjENJ6Yo_qTJnjQhGeqih0O5QTDG5iBmBUmDqIqYwYquksN0Z80u_LouPUM8I0x0zr8tSTqEf1_kdEa5EBhEUgIK7EhFEMDO_zz_n344UzJXwIIIDrAX1979HCDuvqCsF9s_CHiHNfDy3nSjI7N-LPUJ1pnilX-sOjS6nwyFbFQJaeSAbr66VNPiYbMcESqZIoAft97ot1n7WziyXQiUCLVrWvxTUU_BcCpkItAEFu1O472UWhUgE2oCCe4o5l4InAm1AIe4UDOdSsESgDSikpyC5FDQRaDXFwdfMUpBIoP03XA32r4lAS8fKBqh7sM3A_2L3O6e7XwCKKZI3DIWK5A1DISN5w1CISN4wf4gkkjfMWpBI3jAU-C3vcEXkDZkJeKo=)
+![Kroki generated Ditaa](https://kroki.io/ditaa/svg/eNrtl82OgyAURvc-BXszE_7RdW1m15iZSV_DF-DhC5RWBrpAINxZlASNi_vlyNUjDqhijB9mjENJ6Yo_qTJnjQhGeqih0O5QTDG5iBmBUmDqIqYwYquksN0Z80u_LouPUM8I0x0zr8tSTqEf1_kdEa5EBhEUgIK7EhFEMDO_zz_n344UzJXwIIIDrAX1979HCDuvqCsF9s_CHiHNfDy3nSjI7N-LPUJ1pnilX-sOjS6nwyFbFQJaeSAbr66VNPiYbMcESqZIoAft97ot1n7WziyXQiUCLVrWvxTUU_BcCpkItAEFu1O472UWhUgE2oCCe4o5l4InAm1AIe4UDOdSsESgDSikpyC5FDQRaDXFwdfMUpBIoP03XA32r4lAS8fKBqh7sM3A_2L3O6e7XwCKKZI3DIWK5A1DISN5w1CISN4wf4gkkjfMWpBI3jAU-C3vcEXkDZkJeKo=)
 
 ## ESP32-WROOM
 <!--
@@ -123,7 +123,7 @@
             +-----+                                  +-----+
 -->
 
-![Kroki generated PlantUML](https://kroki.io/ditaa/svg/eNrFlssKgzAQRfd-xexFMDNG27WxpbQ-0GL7MX58W2mx0RJmcaF3EQgzh8MkBiRaEievxN7Oi1-Koy-WJpJRnutnt8lSOjaOpmhbU8HzuoKrRgmzENY8dquOauj6ahhOh7WZ0eZmaxZObn3b1h58vYPNkinhHm622ns2aDPTn75tkaUj8CQnMvvwzIH8NrNVwmaHNudK2BLaXGhnLsBmk2nNOdrMSjhDn_b8WDRwijYbUcKMNjvtaRuLNmtndgZsLmvlPbsUbLajEi4vZ6TZ_5UK5N34AGiqfao=)
+![Kroki generated Ditaa](https://kroki.io/ditaa/svg/eNrFlssKgzAQRfd-xexFMDNG27WxpbQ-0GL7MX58W2mx0RJmcaF3EQgzh8MkBiRaEievxN7Oi1-Koy-WJpJRnutnt8lSOjaOpmhbU8HzuoKrRgmzENY8dquOauj6ahhOh7WZ0eZmaxZObn3b1h58vYPNkinhHm622ns2aDPTn75tkaUj8CQnMvvwzIH8NrNVwmaHNudK2BLaXGhnLsBmk2nNOdrMSjhDn_b8WDRwijYbUcKMNjvtaRuLNmtndgZsLmvlPbsUbLajEi4vZ6TZ_5UK5N34AGiqfao=)
 
 ## STM32 NUCLEO
 144-pins female header connectors, such as in NUCLEO-F756ZG. [See manual](https://www.st.com/resource/en/user_manual/dm00244518-stm32-nucleo-144-boards-stmicroelectronics.pdf)
@@ -197,7 +197,7 @@ For instance, CN7-A0 header pin corresponds to PA3.
 
                   CN9                                                  CN10
 -->
-![Kroki generated PlantUML](https://kroki.io/ditaa/svg/eNrNmEGOgzAMRfecIvtqpDiOk7BEIM2OZU_Tw49NW5pIncqtYmaQvCvm5ffHP-Bcp2te8zB06nX6ul6nHg0XSO7igCtwLUC9KC_36kOZuRlyxY0y_lPKws2IK_3ScF7LHxOO3Ey0LE8b7tbqQrjOtbUiqgiD5x8LJXj5p3F48cBeOlbWilFHKcsC4ApCGY6hvFmLKUlHKcIDckWhBGtKPOPDXkyZdJRyExBXEkpvriWda4vFrKMUe0DmKnzTaA35vS61w2LRQYpDYOQdJysrB0HeDRbHHhH2egvsPiHf9WHvybEPtWw-RD9Ptn2mJWvIyTeiECh6iXfqkUbWZp2gEYWCptmUXDPRzCFDK4oqM6fs6oFmHpkTNqKQKjKn4uqBZp6YU2xEIWVipiYxzSGpFmXbEhrIXA9C87xccnOMIFWq36Lhnpcx2FNCEw_KVC91YEawp_S1LKSMdbFxYJeEq0vMKdNYy0KqXF9QlhbYJmE7DNj7MpVKliV5HeUWU2yTIDbBgw5yuywJ9LsnsE2C2ASLvZa5liUFnZYyGALbBLfcyfaUqZYl6d4oUTIf2SYoNsFkT0m1LEn3RolyKkG2CYpNkI54o_zoEPg4Tg_PPnCM7u1rXsH_AN1nAPo=)
+![Kroki generated Ditaa](https://kroki.io/ditaa/svg/eNrNmEGOgzAMRfecIvtqpDiOk7BEIM2OZU_Tw49NW5pIncqtYmaQvCvm5ffHP-Bcp2te8zB06nX6ul6nHg0XSO7igCtwLUC9KC_36kOZuRlyxY0y_lPKws2IK_3ScF7LHxOO3Ey0LE8b7tbqQrjOtbUiqgiD5x8LJXj5p3F48cBeOlbWilFHKcsC4ApCGY6hvFmLKUlHKcIDckWhBGtKPOPDXkyZdJRyExBXEkpvriWda4vFrKMUe0DmKnzTaA35vS61w2LRQYpDYOQdJysrB0HeDRbHHhH2egvsPiHf9WHvybEPtWw-RD9Ptn2mJWvIyTeiECh6iXfqkUbWZp2gEYWCptmUXDPRzCFDK4oqM6fs6oFmHpkTNqKQKjKn4uqBZp6YU2xEIWVipiYxzSGpFmXbEhrIXA9C87xccnOMIFWq36Lhnpcx2FNCEw_KVC91YEawp_S1LKSMdbFxYJeEq0vMKdNYy0KqXF9QlhbYJmE7DNj7MpVKliV5HeUWU2yTIDbBgw5yuywJ9LsnsE2C2ASLvZa5liUFnZYyGALbBLfcyfaUqZYl6d4oUTIf2SYoNsFkT0m1LEn3RolyKkG2CYpNkI54o_zoEPg4Tg_PPnCM7u1rXsH_AN1nAPo=)
 
 
 ### With logical pins
@@ -268,4 +268,46 @@ Logical pin names are indicated with parenthesis (PA3).
 
                   CN9                                                  CN10
 -->
-![Kroki generated PlantUML](https://kroki.io/ditaa/svg/eNrNmM1u2zAQhO96Ch5rBAXEXf5IR9qUjFzcIi38NH747qzjlAIixq3FtAZ4sS1pNPx2diVjtvkcTrHrNjrX09fr5-mxE375fgg7k20wF2NlkaxsvXy_H3Zbab3cVveY1L310BrlZCzLqVaHH8b_UCtD6yAn87Lgb3qZ5u59LoZ_J5Mgc5STwVbIPZ5yV-FtE5WnQ8mbY3A47FZVJt146uXPUGp7bDwOSv69jb8U60Gtz99k00reHHg7jLtKQUVoxc1ZK4uglaA1NNb6Mv2Yfha8ZYc6Pth-3di9-opNsCzLQauF1thYqzF85gK67IJqtRWtKCjCQdbLCtDay_cSAc3FGn8u2XNRxVKFWAexIMZGWYMcNKpW31yr1G_JnhtwXaoAu1etoMaOUpG4QRwzy_19ktYbew4eHde13tf-1i52fj6V8HjAc-StLnafEemcsymzL6rTvGseuX_-SdidMvtQotPYTqqUDbYj9QuHPAIpx_o-vUp9iz4k3yRp0gxgqX_karILhzyCPodasUnCpWAW0acIuKZa1VdaWoQGmn2tk0klpmjK5GP1lVtqnVUrLyzy8Ci7itZZfkyDKZOP1FffVCvsS25hkQd7mWsMYOSmsOi6yKK2DMwYBJIvLdKq-WBAxHxIsQxOzc2xeW_IcTGXeE2fj3rDa0O59VwHBqahpa0JyZSjXbQWpPrk1seDrE8HNJQ914GBKTZFgFRrX1rk0esnX9OqCIBvEm6I1h4RtgMVKsNYmuMxGUyhplKOyoxbI0GGdJzoNa36ppb2KnYo3MlBr1tLAHCcWVucMENghvUOP23mejMpALt5uKuuSKAhQMMKTdu8yldnY2lS0EyPFWdTD2eRHCTssPYsrca2jSBfmQ2lSQHNcq49Kmq4MqYHFnYY7HDQIaEps8ers740KTjtQDVm1VmMOSzsMNhhfVHUcsx6dMb8Pbp37713Gf_mJZ7tu-4XR5NCcA==)
+![Kroki generated Ditaa](https://kroki.io/ditaa/svg/eNrNmM1u2zAQhO96Ch5rBAXEXf5IR9qUjFzcIi38NH747qzjlAIixq3FtAZ4sS1pNPx2diVjtvkcTrHrNjrX09fr5-mxE375fgg7k20wF2NlkaxsvXy_H3Zbab3cVveY1L310BrlZCzLqVaHH8b_UCtD6yAn87Lgb3qZ5u59LoZ_J5Mgc5STwVbIPZ5yV-FtE5WnQ8mbY3A47FZVJt146uXPUGp7bDwOSv69jb8U60Gtz99k00reHHg7jLtKQUVoxc1ZK4uglaA1NNb6Mv2Yfha8ZYc6Pth-3di9-opNsCzLQauF1thYqzF85gK67IJqtRWtKCjCQdbLCtDay_cSAc3FGn8u2XNRxVKFWAexIMZGWYMcNKpW31yr1G_JnhtwXaoAu1etoMaOUpG4QRwzy_19ktYbew4eHde13tf-1i52fj6V8HjAc-StLnafEemcsymzL6rTvGseuX_-SdidMvtQotPYTqqUDbYj9QuHPAIpx_o-vUp9iz4k3yRp0gxgqX_karILhzyCPodasUnCpWAW0acIuKZa1VdaWoQGmn2tk0klpmjK5GP1lVtqnVUrLyzy8Ci7itZZfkyDKZOP1FffVCvsS25hkQd7mWsMYOSmsOi6yKK2DMwYBJIvLdKq-WBAxHxIsQxOzc2xeW_IcTGXeE2fj3rDa0O59VwHBqahpa0JyZSjXbQWpPrk1seDrE8HNJQ914GBKTZFgFRrX1rk0esnX9OqCIBvEm6I1h4RtgMVKsNYmuMxGUyhplKOyoxbI0GGdJzoNa36ppb2KnYo3MlBr1tLAHCcWVucMENghvUOP23mejMpALt5uKuuSKAhQMMKTdu8yldnY2lS0EyPFWdTD2eRHCTssPYsrca2jSBfmQ2lSQHNcq49Kmq4MqYHFnYY7HDQIaEps8ers740KTjtQDVm1VmMOSzsMNhhfVHUcsx6dMb8Pbp37713Gf_mJZ7tu-4XR5NCcA==)
+
+## Small connectors
+<!--
+JTAG (top)
+                               3V3
+  |----------------- GND -----||
+  +----------------------------+-+
+  | o  o  o  o  o  o  o  o  o  o |
+  |                              |
+  | o  o  o  o  o  o  o  o  o  □ |
+  +----------+-----+--+--+-----+-+
+             |     |  |  |     |
+            TDO   TCK | TDI    3V3
+                     TMS
+
+JTAG (bottom)
+3V3
+  | |----------------- GND ------|
+  +----------------------------+-+
+  | o  o  o  o  o  o  o  o  o  o |
+  |                              |
+  | □  o  o  o  o  o  o  o  o  o |
+  +-+-----+--+--+-----+----------+
+    |     |  |  |     |
+  3V3    TDI | TCK   TDO
+            TMS
+
+UART (top)
+  +----------------+
+  | □  o  o  o  o  |
+  +-+--+--+--+--+--+
+    |  |     |  |
+  3V3 RXD   TXD GND
+
+UART (bottom)
+  +----------------+
+  | □  o  o  o  o  |
+  +-+--+--+--+--+--+
+    |  |     |  |
+  GND TXD   RXD 3V3
+-->
+![Kroki generated Ditaa](https://kroki.io/ditaa/svg/eNq9ks8KwjAMxu99ihwdoSefYFgYTlSYVTx7l3rYMc_h3VfzSUzCurI_dicNJQQa8n35tbUvK1i14VEYyMf6suYWsuOA6uBAKyJuQJsJtCgzIEDmkLZkg5amvJ8vGLnBmDHVOFyaYqa-HjR4d5S82fGtd9tEZSb8_mRMrXRvoW3DvTDcu8BY18ohtn9GLBwX5uAs2eTHfCfbARGUpFgVsZlgPJeN7z_pZHucd9p7GxyTfHRF56O5OpHjzLCjZHy5n6jKo3pVFW328AGU4rHY)
