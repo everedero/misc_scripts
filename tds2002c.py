@@ -7,79 +7,118 @@ import pyvisa
 import time
 import numpy as np
 
-rm = pyvisa.ResourceManager()
-inst = rm.open_resource("USB0::1689::929::C010857::0::INSTR")
-inst.timeout = 50000 # time in ms
-print(inst.query("*IDN?"))
-print(inst.query("*ESR?"))
+def connect():
+    rm = pyvisa.ResourceManager()
+    inst = rm.open_resource("USB0::1689::929::C010857::0::INSTR")
+    inst.timeout = 50000 # time in ms
+    idn = inst.query("*IDN?")
+    print("Connected to:")
+    print(idn)
+    test_error(inst)
+    return(inst)
 
-print(inst.query("*ESR?"))
-print(inst.query("ALLEV?"))
-inst.write("FACTORY")
-print(inst.query("CH1:VOLTS?"))
-inst.write("CH1:VOLTS 5")
-inst.write("HOR:MAIN:SCALE 500e-6")
-print(inst.query("HOR:MAIN:SCALE?"))
-inst.write("TRIG:MAIN:LEVEL 2.4")
-print(inst.query("TRIG:MAIN:LEVEL?"))
-print(inst.query("*ESR?"))
-inst.write("ACQUIRE:STOPAFTER SEQUENCE")
-inst.write("ACQUIRE:STATE ON")
-print(inst.query("*OPC?"))
-inst.write("MEASU:IMMED:TYPE MEAN")
-print(inst.query("MEASU:IMMED:VALUE?"))
-inst.write("MEASU:IMMED:TYPE FREQ")
-print(inst.query("MEASU:IMMED:VALUE?"))
-print(inst.query("*ESR?"))
-print(inst.query("ALLEV?"))
-inst.write("CURVE?")
-values = inst.read_raw()
+def test_error(inst):
+    err = inst.query("*ESR?")
+    try:
+        err = int(err)
+    except:
+        raise IOError(f"Invalid error code {err}")
+    if err != 0:
+        print(f"Error code {err}")
 
-# Remove ":CURVE #42500"
-# TODO find a better separator?
-if b'00' in values:
-    param, value = values.split(b'00')#, 1)
-value = value[:-1]
-#value = value[1::]
+def set_up_scale(inst, time_div=500e-6, volt_div=5, trig_level=2.5):
+    inst.write("FACTORY")
+    inst.write(f"CH1:VOLTS {volt_div}")
+    inst.write(f"HOR:MAIN:SCALE {time_div}")
+    inst.write("TRIG:MAIN:LEVEL {trig_level}")
 
-data = np.frombuffer(value, dtype='b')
+def exec_capture(inst):
+    inst.write("ACQUIRE:STOPAFTER SEQUENCE")
+    inst.write("ACQUIRE:STATE ON")
+    print(inst.query("*OPC?"))
 
-# Print all measurement parameters
-print(inst.query("WFMPRE?"))
+def retrieve_measure(inst):
+    test_error(inst)
+    metadata = dict()
+    inst.write("MEASU:IMMED:TYPE MEAN")
+    val = inst.query("MEASU:IMMED:VALUE?")
+    print(val)
+    val = val.split(" ")[1].rstrip()
+    metadata["mean"] = float(val)
+    inst.write("MEASU:IMMED:TYPE FREQ")
+    val = inst.query("MEASU:IMMED:VALUE?")
+    val = val.split(" ")[1].rstrip()
+    metadata["freq"] = float(val)
+    test_error(inst)
+    inst.write("CURVE?")
+    values = inst.read_raw()
 
-# Retrieve info about values
-# Xaxis * XINCR
-xincr = inst.query("WFMP:XINCR?")
-xincr = xincr.split(" ")[1]
-xincr = float(xincr)
-# Yaxis * YMULT
-ymult = inst.query("WFMP:YMULT?")
-ymult = ymult.split(" ")[1]
-ymult = float(ymult)
-# Number of points
-nrpt = inst.query("WFMP:NR_P?")
-nrpt = nrpt.split(" ")[1]
-nrpt = int(nrpt)
+    # Remove ":CURVE #42500"
+    # TODO find a better separator?
+    if b'00' in values:
+        value = values[13::]
+    value = value[:-1]
 
-if len(value) != nrpt:
-    raise IOError("Number of samples retrieved do not match")
+    data = np.frombuffer(value, dtype='b')
 
-time_val = np.arange(0, nrpt * xincr, xincr)
+    # Print all measurement parameters
+    print("Measurement params:")
+    print(inst.query("WFMPRE?"))
 
-data = data * ymult
+    # Retrieve info about values
+    # Xaxis * XINCR
+    xincr = inst.query("WFMP:XINCR?")
+    xincr = xincr.split(" ")[1]
+    xincr = float(xincr)
+    metadata["xincr"] = xincr
+    # Yaxis * YMULT
+    ymult = inst.query("WFMP:YMULT?")
+    ymult = ymult.split(" ")[1]
+    ymult = float(ymult)
+    metadata["ymult"] = ymult
+    # Number of points
+    nrpt = inst.query("WFMP:NR_P?")
+    nrpt = nrpt.split(" ")[1]
+    nrpt = int(nrpt)
+    # Description
+    val = inst.query("WFMP:WFID?")
+    val = val[13::]
+    val = val.replace('"', "")
+    metadata["description"] = val
 
-# Export data
-fulldata = np.concatenate([time_val[:, np.newaxis], data[:, np.newaxis]], axis=1)
+    if len(value) != nrpt:
+        raise IOError("Number of samples retrieved do not match")
 
-np.savetxt("oscillo.csv", fulldata, delimiter=",", header="time (s), voltage (v)")
+    time_val = np.arange(0, nrpt * xincr, xincr)
 
-# Loading saved data
-#newdata = np.loadtxt("oscillo.csv", delimiter=",")
+    data = data * ymult
 
-# Plot
-from matplotlib import pyplot as plt
-plt.plot(time_val, data)
-plt.xlabel("Time (s)")
-plt.ylabel("Voltage (V)")
-plt.grid()
-plt.savefig('oscillo.png')
+    # Export data
+    fulldata = np.concatenate([time_val[:, np.newaxis], data[:, np.newaxis]], axis=1)
+    return(fulldata, metadata)
+
+def save_data(fulldata, metadata, filename="oscillo", allscreen=True):
+    np.savetxt(f"{filename}.csv", fulldata, delimiter=",",
+               header=f"""{metadata["description"]}\ntime (s), voltage (v)""")
+
+    # Loading saved data
+    #newdata = np.loadtxt(f"{filename}.csv", delimiter=",")
+
+    # Plot
+    from matplotlib import pyplot as plt
+    plt.plot(fulldata[:,0], fulldata[:,1])
+    plt.xlabel("Time (s)")
+    plt.ylabel("Voltage (V)")
+    plt.title(metadata["description"])
+    if allscreen:
+        ymax = metadata["ymult"] * 25 * 4
+        plt.ylim(-ymax, ymax)
+    plt.grid()
+    plt.savefig(f"{filename}.png")
+
+if __name__ == "__main__":
+    inst = connect()
+    #set_up_scale(inst, time_div=500e-6, volt_div=5, trig_level=2.5)
+    #exec_capture(inst)
+    data, metadata = retrieve_measure(inst)
+    save_data(data, metadata, filename="oscillo")
