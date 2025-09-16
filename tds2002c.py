@@ -6,6 +6,7 @@ via USB and the VISA thing
 import pyvisa
 import time
 import numpy as np
+from pathlib import Path
 
 def connect():
     rm = pyvisa.ResourceManager()
@@ -121,4 +122,13 @@ if __name__ == "__main__":
     #set_up_scale(inst, time_div=500e-6, volt_div=5, trig_level=2.5)
     #exec_capture(inst)
     data, metadata = retrieve_measure(inst)
-    save_data(data, metadata, filename="oscillo")
+    filename_root = "oscillo"
+    filename_num = 1
+    filename = f"{filename_root}{filename_num}"
+
+    while Path(filename + ".csv").exists():
+        filename_num += 1
+        filename = f"{filename_root}{filename_num}"
+    print(f"Creating file {filename}")
+
+    save_data(data, metadata, filename=filename)
