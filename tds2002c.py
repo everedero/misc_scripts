@@ -90,7 +90,7 @@ def retrieve_measure(inst):
     if len(value) != nrpt:
         raise IOError("Number of samples retrieved do not match")
 
-    time_val = np.arange(0, nrpt * xincr, xincr)
+    time_val = np.arange(0, nrpt * xincr, xincr) - (nrpt * xincr / 2)
 
     data = data * ymult
 
@@ -98,9 +98,39 @@ def retrieve_measure(inst):
     fulldata = np.concatenate([time_val[:, np.newaxis], data[:, np.newaxis]], axis=1)
     return(fulldata, metadata)
 
-def save_data(fulldata, metadata, filename="oscillo", allscreen=True):
+def retrieve_cursors(inst):
+    val = inst.query("CURSOR?")
+    print(val)
+    val = inst.query("CURSOR:FUNCTION?")
+    if val.find("VBARS") > -1:
+        is_vertical = True
+        val1 = inst.query("CURSOR:VBARS:POSITION1?")
+        val2 = inst.query("CURSOR:VBARS:POSITION2?")
+    elif val.find("HBARS") > -1:
+        is_vertical = False
+        val1 = inst.query("CURSOR:HBARS:POSITION1?")
+        val2 = inst.query("CURSOR:HBARS:POSITION2?")
+    else:
+        return None
+    val1 = val1.split(" ")[1]
+    val2 = val2.split(" ")[1]
+    try:
+        val1 = float(val1)
+        val2 = float(val2)
+    except:
+        print("Invalid cursor values")
+        return None
+
+    ret = {"is_vertical": is_vertical, "v1": val1, "v2": val2}
+    return(ret)
+
+def save_data(fulldata, metadata, filename="oscillo", allscreen=True,
+              cursors=None):
     np.savetxt(f"{filename}.csv", fulldata, delimiter=",",
                header=f"""{metadata["description"]}\ntime (s), voltage (v)""")
+    if cursors is not None:
+        with open(f"{filename}_cursors.txt", "w") as myfile:
+            myfile.write(str(cursors))
 
     # Loading saved data
     #newdata = np.loadtxt(f"{filename}.csv", delimiter=",")
@@ -110,6 +140,14 @@ def save_data(fulldata, metadata, filename="oscillo", allscreen=True):
     plt.plot(fulldata[:,0], fulldata[:,1])
     plt.xlabel("Time (s)")
     plt.ylabel("Voltage (V)")
+    if cursors is not None:
+        if cursors["is_vertical"]:
+            plt.axvline(x=cursors["v1"])
+            plt.axvline(x=cursors["v2"])
+        else:
+            plt.axhline(y=cursors["v1"])
+            plt.axhline(y=cursors["v2"])
+
     plt.title(metadata["description"])
     if allscreen:
         ymax = metadata["ymult"] * 25 * 4
@@ -121,7 +159,9 @@ if __name__ == "__main__":
     inst = connect()
     #set_up_scale(inst, time_div=500e-6, volt_div=5, trig_level=2.5)
     #exec_capture(inst)
+
     data, metadata = retrieve_measure(inst)
+    cursors = retrieve_cursors(inst)
     filename_root = "oscillo"
     filename_num = 1
     filename = f"{filename_root}{filename_num}"
@@ -131,4 +171,4 @@ if __name__ == "__main__":
         filename = f"{filename_root}{filename_num}"
     print(f"Creating file {filename}")
 
-    save_data(data, metadata, filename=filename)
+    save_data(data, metadata, filename=filename, cursors=cursors)
