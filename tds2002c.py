@@ -144,9 +144,12 @@ def save_data(fulldata, metadata, filename="oscillo", allscreen=True,
         if cursors["is_vertical"]:
             plt.axvline(x=cursors["v1"])
             plt.axvline(x=cursors["v2"])
+            textstr = "Cursor dt = {} s".format(abs(cursors["v2"] - cursors["v1"]))
         else:
             plt.axhline(y=cursors["v1"])
             plt.axhline(y=cursors["v2"])
+            textstr = "Cursor dv = {} V".format(abs(cursors["v2"] - cursors["v1"]))
+        plt.text(0.02, 0.02, textstr, fontsize=10, transform=plt.gcf().transFigure)
 
     plt.title(metadata["description"])
     if allscreen:
