@@ -12,3 +12,8 @@ pactl load-module module-remap-sink sink_name=mono master=alsa_output.pci-0000_0
 # Cleanup when done
 pactl unload-module module-remap-sink
 pactl unload-module module-loopback
+
+# Module loopback sometimes get stuck
+# Loopback by using Pipewire GUI
+apt install qpwgraph
+qpwgraph
