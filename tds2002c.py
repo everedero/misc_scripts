@@ -10,9 +10,13 @@ from pathlib import Path
 
 def connect():
     rm = pyvisa.ResourceManager()
-    inst = rm.open_resource("USB0::1689::929::C010857::0::INSTR")
+    inst = rm.open_resource("ASRL/dev/ttyS1::INSTR")
     inst.timeout = 50000 # time in ms
-    idn = inst.query("*IDN?")
+    try:
+        idn = inst.query("*IDN?")
+    except:
+        print("Could not open device. Try:")
+        print(rm.list_resources())
     print("Connected to:")
     print(idn)
     test_error(inst)
